@@ -1,0 +1,9 @@
+LICENSE
+README.md
+pyproject.toml
+src/bammm/__init__.py
+src/bammm/bammm.py
+src/bammm_ozika.egg-info/PKG-INFO
+src/bammm_ozika.egg-info/SOURCES.txt
+src/bammm_ozika.egg-info/dependency_links.txt
+src/bammm_ozika.egg-info/top_level.txt
