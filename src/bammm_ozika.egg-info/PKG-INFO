@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: bammm-ozika
-Version: 0.0.2
+Version: 0.0.3
 Summary: Bayesian model management
 Author-email: Ondrej Zika <author@example.com>
 License: Copyright (c) 2018 The Python Packaging Authority
@@ -34,7 +34,7 @@ License-File: LICENSE
 
 ## **bam**bi **m**odel **m**anagement (bammm)
 
-Estimating complex models can take time. **bammm** allows one to save estimated models and to later load them as required (without the need to re-estimate them). s
+Estimating complex models can take time. **bammm** allows one to save estimated models and to later load them as required (without the need to re-estimate them).
 
 Currently it is build to only work with (generalized) linear models in python that have been esimtated using [bambi](https://github.com/bambinos/bambi) but in essence it can be used to save samples from any [PyMC](https://github.com/pymc-devs/pymc) model.
 
@@ -49,7 +49,14 @@ Currently it is build to only work with (generalized) linear models in python th
 
 ## Usage
 ### Setup
-
+Install using pip:
+```python
+pip install bammm-ozika
+```
+Load
+```python
+import bammm.bammm as mm
+```
 
 Full example script can be found [here](https://github.com/ozika/bammm/blob/main/demo/examples.py).
 ### Generate your local JSON database
