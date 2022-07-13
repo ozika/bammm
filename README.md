@@ -1,6 +1,6 @@
 ## **bam**bi **m**odel **m**anagement (bammm)
 
-Estimating complex models can take time. **bammm** allows one to save estimated models and to later load them as required (without the need to re-estimate them). s
+Estimating complex models can take time. **bammm** allows one to save estimated models and to later load them as required (without the need to re-estimate them). 
 
 Currently it is build to only work with (generalized) linear models in python that have been esimtated using [bambi](https://github.com/bambinos/bambi) but in essence it can be used to save samples from any [PyMC](https://github.com/pymc-devs/pymc) model.
 
