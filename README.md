@@ -94,4 +94,4 @@ mod, results, m = mm.estimate_lmm(mod, [], override=0)
 
 
 
-I am not saying that his is the best way to achieve model saving/loading, but it seems to work well (at least for the poor practitioner of statistics that is me).
+This might not be the *best* way to achieve model saving/loading, but it seems to work well (at least for the poor practitioner of statistics that is me).
