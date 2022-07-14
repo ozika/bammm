@@ -30,7 +30,8 @@ Full example script can be found [here](https://github.com/ozika/bammm/blob/main
 
 Before first use on a project a local database needs to be generated. Specify a path for the database:
 ```python
-db_path = os.path.join(root_dir, "demo", "my_project", "databse_name.json")
+os.chdir(root_dir)
+db_path = os.path.join( "demo", "my_project", "databse_name.json")
 ```
 Initialize database:
 ```python

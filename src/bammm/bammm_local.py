@@ -54,18 +54,18 @@ def prepare_fit(mod, model_family, model_identifier, root_dir):
     return mod
 
 def estimate_lmm(mod, data, override=0):
-    m = bmb.Model(mod["lmm"]["eq"], data)
-    if not(os.path.exists(mod["location"])) or (override==1):
+    print(mod["current_sys_location"])
+    if not(os.path.exists(mod["current_sys_location"])) or (override==1):
+        m = bmb.Model(mod["lmm"]["eq"], data)
         if not ("ncores" in mod["est"]):
             mod["est"]["ncores"] = None #default set to max https://bambinos.github.io/bambi/main/api_reference.html
-        if not ("response_dist" in mod["est"])
-            mod["est"]["response_dist"] = "gaussian"
-        results = m.fit(draws=mod["est"]["nsamples"], chains=mod["est"]["nchains"], cores=mod["est"]["ncores"], family=mod["est"]["response_dist"])
+        results = m.fit(draws=mod["est"]["nsamples"], chains=mod["est"]["nchains"], cores=mod["est"]["ncores"])
         mod["est"]["done"] = 1
-        pc.dump( results, open( mod["location"], "wb+" ) )
+        pc.dump( results, open( mod["current_sys_location"], "wb+" ) )
     else:
+        m = []
         print("Model "+ mod["name"] + " already exist, loading it.");
-        with open( mod["location"], "rb" ) as f:
+        with open( mod["current_sys_location"], "rb" ) as f:
             unpickler = pc.Unpickler(f)
             results = unpickler.load()
     return mod, results, m
