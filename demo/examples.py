@@ -45,10 +45,9 @@ mod["est"]["ncores"] = 2 # number of cores to be useds in fitting
 mod["name"] = model_family + "_" + model_identifier+"_"+str(mod["est"]["nchains"])+"_"+str(mod["est"]["nsamples"])
 
 # specify model data location
-mod["model_folder"] = os.path.join(root_dir, "output", "dev", "model_management", "models", model_family )
-if not(os.path.exists(mod["model_folder"])):
-    os.mkdir(mod["model_folder"])
-mod["location"] = os.path.join(mod["model_folder"], mod["name"]+".dic")
+mod = mm.prepare_fit(mod, model_family, model_identifier, models_path)
+
+
 
 # It's usually a good idea to save the model info here
 models[mod["name"]] = mod

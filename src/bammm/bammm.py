@@ -44,7 +44,7 @@ def generate_equation(depvar, fxeff, rneff):
     rneff = [ '('+i+')' for i in rneff ]
     eq = depvar + ' ~ ' + ' + '.join(fxeff+rneff)
     return eq
-def prepare_fit(mod, model_family, model_identifier, root_dir):
+def prepare_fit(mod, model_family, model_identifier, models_path):
     mod["name"] = model_family + "_" + model_identifier+"_"+str(mod["est"]["nchains"])+"_"+str(mod["est"]["nsamples"])
     # specify model data location
     mod["model_folder"] = models_path
@@ -55,14 +55,14 @@ def prepare_fit(mod, model_family, model_identifier, root_dir):
 
 def estimate_lmm(mod, data, override=0):
     m = bmb.Model(mod["lmm"]["eq"], data)
-    if not(os.path.exists(mod["location"])) or (override==1):
+    if not(os.path.exists(mod["current_sys_location"])) or (override==1):
         if not ("ncores" in mod["est"]):
             mod["est"]["ncores"] = None #default set to max https://bambinos.github.io/bambi/main/api_reference.html
         if not ("response_dist" in mod["est"])
             mod["est"]["response_dist"] = "gaussian"
         results = m.fit(draws=mod["est"]["nsamples"], chains=mod["est"]["nchains"], cores=mod["est"]["ncores"], family=mod["est"]["response_dist"])
         mod["est"]["done"] = 1
-        pc.dump( results, open( mod["location"], "wb+" ) )
+        pc.dump( results, open( mod["current_sys_location"], "wb+" ) )
     else:
         print("Model "+ mod["name"] + " already exist, loading it.");
         with open( mod["location"], "rb" ) as f:
