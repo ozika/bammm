@@ -43,9 +43,10 @@ def get_template():
 def generate_equation(depvar, fxeff, rneff):
     rneff = [ '('+i+')' for i in rneff ]
     eq = depvar + ' ~ ' + ' + '.join(fxeff+rneff)
+    eq = eq.replace(" + ()", "")
     return eq
-def prepare_fit(mod, model_family, model_identifier, models_path):
-    mod["name"] = model_family + "_" + model_identifier+"_"+str(mod["est"]["nchains"])+"_"+str(mod["est"]["nsamples"])
+def prepare_fit(mod, model_group, model_identifier, models_path):
+    mod["name"] = model_group + "_" + model_identifier+"_"+str(mod["est"]["nchains"])+"_"+str(mod["est"]["nsamples"])
     # specify model data location
     mod["model_folder"] = models_path
     if not(os.path.exists(mod["model_folder"])):
@@ -53,14 +54,22 @@ def prepare_fit(mod, model_family, model_identifier, models_path):
     mod["location"] = os.path.join(mod["model_folder"], mod["name"]+".dic")
     return mod
 
-def estimate_lmm(mod, data, override=0):
-    m = bmb.Model(mod["lmm"]["eq"], data)
+def estimate_lmm(mod, data=[], override=0):
+    if not ("response_dist" in mod["est"]):
+        mod["est"]["response_dist"] = "gaussian"
+    if not ("link" in mod["est"]):
+        mod["est"]["link"]  = "identity"
+
+    if len(data)>0:
+        m = bmb.Model(mod["lmm"]["eq"], data, family=mod["est"]["response_dist"], link=mod["est"]["link"])
+    else:
+        m = []
+    #print(m)
     if not(os.path.exists(mod["current_sys_location"])) or (override==1):
         if not ("ncores" in mod["est"]):
             mod["est"]["ncores"] = None #default set to max https://bambinos.github.io/bambi/main/api_reference.html
-        if not ("response_dist" in mod["est"])
-            mod["est"]["response_dist"] = "gaussian"
-        results = m.fit(draws=mod["est"]["nsamples"], chains=mod["est"]["nchains"], cores=mod["est"]["ncores"], family=mod["est"]["response_dist"])
+
+        results = m.fit(draws=mod["est"]["nsamples"], chains=mod["est"]["nchains"], cores=mod["est"]["ncores"])
         mod["est"]["done"] = 1
         pc.dump( results, open( mod["current_sys_location"], "wb+" ) )
     else:
@@ -76,7 +85,7 @@ def save_model_info(models, path):
 def update_model_entry(models, mod, path):
     models = json.load(open(path, "r"))
     models[mod["name"]] = mod
-    mm.save_model_info(models, path)
+    save_model_info(models, path)
 
 
 def remove_model_from_db(databse, names, delete_data=0):

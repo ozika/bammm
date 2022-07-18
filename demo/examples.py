@@ -1,9 +1,10 @@
 import os
 from groo.groo import get_root
-root_dir = get_root(".root_dir_covid")
+root_dir = get_root(".root_bammm")
+os.chdir(root_dir)
 import sys
-sys.path.append(os.path.join(root_dir, "covid-fear", "scripts"))
-import cov_model_management as mm
+sys.path.append(os.path.join(root_dir, "dev"))
+import bammm_dev as mm
 import bambi as bmb
 import json
 
@@ -26,7 +27,7 @@ models = json.load(open(db_path, "r"))
 mod = mm.get_template()
 
 ### specify model
-model_family = "sleepstudy" # this will be used as a folder name to host the models
+model_group = "sleepstudy" # this will be used as a folder name to host the models
 model_identifier = "maximum_model"
 mod["type"] = "lmm" # this is more for future if we decide to add other than linear models
 # dependent variable
@@ -42,10 +43,11 @@ mod["lmm"]["eq"] = mm.generate_equation(mod["lmm"]["dep_var"], mod["lmm"]["fxeff
 mod["est"]["nchains"] = 2
 mod["est"]["nsamples"] = 4000
 mod["est"]["ncores"] = 2 # number of cores to be useds in fitting
-mod["name"] = model_family + "_" + model_identifier+"_"+str(mod["est"]["nchains"])+"_"+str(mod["est"]["nsamples"])
+mod["est"]["family"] = "wald"
+mod["est"]["link"] = "log"
 
 # specify model data location
-mod = mm.prepare_fit(mod, model_family, model_identifier, models_path)
+mod = mm.prepare_fit(mod, model_group, model_identifier, models_path)
 
 
 
